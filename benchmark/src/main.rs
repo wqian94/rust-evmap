@@ -225,7 +225,7 @@ enum EvHandle {
 impl Backend for EvHandle {
     fn b_get(&self, key: u64) -> u64 {
         if let EvHandle::Read(ref r) = *self {
-            r.get_and(&key, |v| v[0]).unwrap_or(0)
+            r.get(&key).map(|v| v.iter().next().copied()).flatten().unwrap_or(0)
         } else {
             unreachable!();
         }
